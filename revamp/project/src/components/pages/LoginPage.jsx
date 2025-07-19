@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Shield } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';
 import '../../styles/AuthPages.css';
@@ -52,11 +51,11 @@ const LoginPage = ({ onSwitchToSignup }) => {
       <div className={`auth-card ${isDark ? 'dark' : 'light'}`}>
         {/* Header */}
         <div className="auth-header">
-          <div className="flex flex-col items-center mb-6">
+          <div className="auth-logo-container">
             <img 
               src="https://experienceleague.adobe.com/icons/adobe-red-logo.svg" 
               alt="Adobe Logo" 
-              className="w-16 h-16 mb-4"
+              className="auth-logo-image"
             />
           </div>
           <h1 className={`auth-title ${isDark ? 'dark' : 'light'}`}>

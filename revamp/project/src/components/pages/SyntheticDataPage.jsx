@@ -429,14 +429,12 @@ const SyntheticDataPage = () => {
 
       <div className="main-content">
         {/* Refresh Button */}
-        <div className="absolute top-20 right-8 z-20">
+        <div className="refresh-button-container">
           <button
             onClick={handleRefresh}
-            className={`p-2 rounded-lg transition-all duration-300 hover:scale-110 ${
-              isDark ? 'text-gray-400 hover:text-white hover:bg-white/10' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
-            }`}
+            className={`refresh-button ${isDark ? 'dark' : 'light'}`}
           >
-            <RefreshCw className="w-5 h-5" />
+            <RefreshCw className="refresh-icon" />
           </button>
         </div>
 
@@ -444,7 +442,7 @@ const SyntheticDataPage = () => {
         <div className="page-header">
           <div className="header-content">
             <div className="header-icon">
-              <Database className="w-6 h-6 text-white" />
+              <Database className="header-icon-svg" />
             </div>
             <div>
               <h1 className={`page-title ${isDark ? 'dark' : 'light'}`}>
@@ -504,36 +502,35 @@ const SyntheticDataPage = () => {
             {/* Attributes Table */}
             {selectedSchema && (
               <div className={`section-card ${isDark ? 'dark' : 'light'}`}>
-                <div className="flex items-center justify-between mb-6">
+                <div className="attributes-header">
                   <h3 className={`section-title ${isDark ? 'dark' : 'light'}`}>Schema Attributes</h3>
                   
-                  <div className="flex items-center gap-4">
+                  <div className="attributes-controls">
                     {/* Generate Example Button */}
                     <button
                       onClick={generateExampleValues}
                       disabled={selectedAttributes.length === 0}
-                      className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                      className="generate-example-button"
                     >
                       Generate Example
                     </button>
                     
                     {/* Search Box */}
-                    <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <div className="search-container">
+                    <Search className="search-icon" />
                     <input
                       type="text"
                       placeholder="Search attributes..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className={`form-input ${isDark ? 'dark' : 'light'}`}
-                      style={{ paddingLeft: '2.5rem' }}
+                      className={`search-input ${isDark ? 'dark' : 'light'}`}
                     />
                     </div>
                   </div>
                 </div>
 
                 {/* Select All */}
-                <div className="checkbox-item mb-4 p-3 rounded-lg" style={{ backgroundColor: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+                <div className="select-all-container">
                   <div
                     onClick={handleSelectAll}
                     className={`checkbox-button ${
@@ -542,13 +539,13 @@ const SyntheticDataPage = () => {
                         : `unchecked ${isDark ? 'dark' : 'light'}`
                     }`}
                   >
-                    {selectAll && <Check className="w-2.5 h-2.5 text-white" />}
+                    {selectAll && <Check className="checkbox-icon" />}
                   </div>
-                  <span className={`checkbox-label font-medium ${isDark ? 'dark' : 'light'}`}>Select All Attributes</span>
+                  <span className={`select-all-label ${isDark ? 'dark' : 'light'}`}>Select All Attributes</span>
                 </div>
 
                 {/* Attributes Table */}
-                <div className="overflow-x-auto">
+                <div className="table-container">
                   <table className="data-table">
                     <thead className={`table-header ${isDark ? 'dark' : 'light'}`}>
                       <tr>
@@ -573,7 +570,7 @@ const SyntheticDataPage = () => {
                                   : `unchecked ${isDark ? 'dark' : 'light'}`
                               }`}
                             >
-                              {selectedAttributes.includes(attr.name) && <Check className="w-2.5 h-2.5 text-white" />}
+                              {selectedAttributes.includes(attr.name) && <Check className="checkbox-icon" />}
                             </div>
                           </td>
                           <td className={`table-cell table-cell-primary ${isDark ? 'dark' : 'light'}`}>{attr.name}</td>
@@ -592,7 +589,7 @@ const SyntheticDataPage = () => {
                                   : `unchecked ${isDark ? 'dark' : 'light'}`
                               }`}
                             >
-                              {primaryKeys.includes(attr.name) && <Check className="w-2.5 h-2.5 text-white" />}
+                              {primaryKeys.includes(attr.name) && <Check className="checkbox-icon" />}
                             </div>
                           </td>
                           <td className="table-cell">
@@ -601,20 +598,15 @@ const SyntheticDataPage = () => {
                               value={attributeComments[attr.name] || ''}
                               onChange={(e) => handleCommentChange(attr.name, e.target.value)}
                               placeholder="Add comment..."
-                              className={`form-input ${isDark ? 'dark' : 'light'}`}
-                              style={{ minWidth: '150px', fontSize: '0.875rem', padding: '0.5rem' }}
+                              className={`comment-input ${isDark ? 'dark' : 'light'}`}
                             />
                           </td>
                           <td className={`table-cell ${isDark ? 'dark' : 'light'}`}>
-                            <div className={`px-3 py-2 rounded-lg text-sm ${
+                            <div className={`example-value ${
                               exampleValues[attr.name] 
-                                ? isDark 
-                                  ? 'bg-green-500/10 text-green-400 border border-green-500/20' 
-                                  : 'bg-green-50 text-green-600 border border-green-200'
-                                : isDark
-                                  ? 'bg-gray-800/50 text-gray-500'
-                                  : 'bg-gray-100 text-gray-400'
-                            }`} style={{ minWidth: '150px', fontSize: '0.875rem' }}>
+                                ? `has-value ${isDark ? 'dark' : 'light'}`
+                                : `no-value ${isDark ? 'dark' : 'light'}`
+                            }`}>
                               {exampleValues[attr.name] || 'Click Generate Example'}
                             </div>
                           </td>
@@ -630,7 +622,7 @@ const SyntheticDataPage = () => {
             {/* Generate Preview */}
             {selectedSchema && selectedAttributes.length > 0 && (
               <div className={`section-card ${isDark ? 'dark' : 'light'}`}>
-                <div className="flex items-center justify-between mb-4">
+                <div className="preview-header">
                   <h3 className={`section-title ${isDark ? 'dark' : 'light'}`}>Preview Generation</h3>
                   <button
                     onClick={generatePreview}
@@ -677,7 +669,7 @@ const SyntheticDataPage = () => {
               <div className={`section-card ${isDark ? 'dark' : 'light'}`}>
                 <h3 className={`section-title ${isDark ? 'dark' : 'light'}`}>Generate Dataset</h3>
                 
-                <div className="form-group mb-6">
+                <div className="form-group">
                   <div>
                     <label className={`form-label ${isDark ? 'dark' : 'light'}`}>
                       Number of Records
@@ -694,14 +686,14 @@ const SyntheticDataPage = () => {
 
                 <div className="button-group full-width">
                   <button className="secondary-button">
-                    <Download className="w-4 h-4" />
+                    <Download className="button-icon" />
                     <span>Download Data</span>
                   </button>
                   <button 
                     onClick={handleLoadToAEP}
-                    className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300 transform hover:scale-105 flex items-center space-x-2"
+                    className="load-aep-button"
                   >
-                    <Upload className="w-4 h-4" />
+                    <Upload className="button-icon" />
                     <span>Load to AEP</span>
                   </button>
                 </div>
@@ -712,34 +704,30 @@ const SyntheticDataPage = () => {
 
         {/* Load to AEP Dialog */}
         {showLoadDialog && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-            <div className={`${isDark ? 'bg-black/90' : 'bg-white/90'} backdrop-blur-xl rounded-2xl p-6 border ${isDark ? 'border-gray-800/50' : 'border-gray-200/50'} w-full max-w-md mx-4`}>
+          <div className="dialog-overlay">
+            <div className={`dialog-container ${isDark ? 'dark' : 'light'}`}>
               {!loadSuccess ? (
                 <>
-                  <h3 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} mb-6`}>Load to AEP</h3>
+                  <h3 className={`dialog-title ${isDark ? 'dark' : 'light'}`}>Load to AEP</h3>
                   
                   {/* Tab Navigation */}
-                  <div className="flex gap-1 mb-6">
+                  <div className="dialog-tabs">
                     <button
                       onClick={() => setLoadDialogTab('select')}
-                      className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
+                      className={`dialog-tab ${
                         loadDialogTab === 'select'
-                          ? 'bg-gradient-to-r from-orange-500 to-red-600 text-white'
-                          : isDark
-                            ? 'text-gray-400 hover:text-white hover:bg-white/10'
-                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                          ? 'active'
+                          : `inactive ${isDark ? 'dark' : 'light'}`
                       }`}
                     >
                       Select Dataset
                     </button>
                     <button
                       onClick={() => setLoadDialogTab('create')}
-                      className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
+                      className={`dialog-tab ${
                         loadDialogTab === 'create'
-                          ? 'bg-gradient-to-r from-orange-500 to-red-600 text-white'
-                          : isDark
-                            ? 'text-gray-400 hover:text-white hover:bg-white/10'
-                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                          ? 'active'
+                          : `inactive ${isDark ? 'dark' : 'light'}`
                       }`}
                     >
                       Create Dataset
@@ -748,18 +736,14 @@ const SyntheticDataPage = () => {
 
                   {/* Tab Content */}
                   {loadDialogTab === 'select' ? (
-                    <div className="mb-6">
-                      <label className={`block text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
+                    <div className="dialog-content">
+                      <label className={`dialog-label ${isDark ? 'dark' : 'light'}`}>
                         Select Existing Dataset
                       </label>
                       <select
                         value={selectedLoadDataset}
                         onChange={(e) => setSelectedLoadDataset(e.target.value)}
-                        className={`w-full p-3 rounded-xl border ${
-                          isDark 
-                            ? 'bg-black/40 border-gray-700 text-white' 
-                            : 'bg-white/40 border-gray-300 text-gray-900'
-                        } focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all duration-300`}
+                        className={`dialog-select ${isDark ? 'dark' : 'light'}`}
                       >
                         <option value="">Choose dataset...</option>
                         <option value="customer_dataset">Customer Dataset</option>
@@ -769,8 +753,8 @@ const SyntheticDataPage = () => {
                       </select>
                     </div>
                   ) : (
-                    <div className="mb-6">
-                      <label className={`block text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
+                    <div className="dialog-content">
+                      <label className={`dialog-label ${isDark ? 'dark' : 'light'}`}>
                         New Dataset Name
                       </label>
                       <input
@@ -778,31 +762,23 @@ const SyntheticDataPage = () => {
                         value={newDatasetName}
                         onChange={(e) => setNewDatasetName(e.target.value)}
                         placeholder="Enter dataset name..."
-                        className={`w-full p-3 rounded-xl border ${
-                          isDark 
-                            ? 'bg-black/40 border-gray-700 text-white placeholder-gray-400' 
-                            : 'bg-white/40 border-gray-300 text-gray-900 placeholder-gray-500'
-                        } focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all duration-300`}
+                        className={`dialog-input ${isDark ? 'dark' : 'light'}`}
                       />
                     </div>
                   )}
 
                   {/* Dialog Actions */}
-                  <div className="flex gap-3">
+                  <div className="dialog-actions">
                     <button
                       onClick={handleLoadDialogClose}
-                      className={`flex-1 px-4 py-3 rounded-xl font-medium transition-all duration-300 ${
-                        isDark 
-                          ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' 
-                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                      }`}
+                      className={`dialog-cancel ${isDark ? 'dark' : 'light'}`}
                     >
                       Cancel
                     </button>
                     <button
                       onClick={handleLoadSubmit}
                       disabled={isLoading || (loadDialogTab === 'select' && !selectedLoadDataset) || (loadDialogTab === 'create' && !newDatasetName.trim())}
-                      className="flex-1 px-4 py-3 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-orange-500/25 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                      className="dialog-confirm"
                     >
                       {isLoading ? 'Loading...' : 'Load'}
                     </button>
@@ -810,14 +786,14 @@ const SyntheticDataPage = () => {
                 </>
               ) : (
                 /* Success State */
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Check className="w-8 h-8 text-white" />
+                <div className="success-state">
+                  <div className="success-icon">
+                    <Check className="success-check" />
                   </div>
-                  <h3 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} mb-2`}>
+                  <h3 className={`success-title ${isDark ? 'dark' : 'light'}`}>
                     Successfully Loaded!
                   </h3>
-                  <p className={`${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                  <p className={`success-text ${isDark ? 'dark' : 'light'}`}>
                     Data has been loaded to AEP successfully.
                   </p>
                 </div>
@@ -832,7 +808,7 @@ const SyntheticDataPage = () => {
             <div className={`section-card ${isDark ? 'dark' : 'light'}`}>
               <h3 className={`section-title ${isDark ? 'dark' : 'light'}`}>Web Data Configuration</h3>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="web-config-grid">
                 {/* Schema Selection */}
                 <div>
                   <label className={`form-label ${isDark ? 'dark' : 'light'}`}>
@@ -866,7 +842,7 @@ const SyntheticDataPage = () => {
                               : `unchecked ${isDark ? 'dark' : 'light'}`
                           }`}
                         >
-                          {selectedEvents.includes(event.id) && <Check className="w-2.5 h-2.5 text-white" />}
+                          {selectedEvents.includes(event.id) && <Check className="checkbox-icon" />}
                         </div>
                         <span className={`checkbox-label ${isDark ? 'dark' : 'light'}`}>{event.name}</span>
                       </div>
@@ -949,7 +925,7 @@ const SyntheticDataPage = () => {
             {/* Generate Preview */}
             {webSchema && selectedEvents.length > 0 && (
               <div className={`section-card ${isDark ? 'dark' : 'light'}`}>
-                <div className="flex items-center justify-between mb-4">
+                <div className="preview-header">
                   <h3 className={`section-title ${isDark ? 'dark' : 'light'}`}>Preview Generation</h3>
                   <button
                     onClick={generateWebPreview}
@@ -977,8 +953,8 @@ const SyntheticDataPage = () => {
               <div className={`section-card ${isDark ? 'dark' : 'light'}`}>
                 <h3 className={`section-title ${isDark ? 'dark' : 'light'}`}>Generate Schema</h3>
                 
-                <button className="secondary-button w-full flex items-center justify-center space-x-2" style={{ backgroundColor: '#8b5cf6' }}>
-                  <FileText className="w-4 h-4" />
+                <button className="generate-schema-button">
+                  <FileText className="button-icon" />
                   <span>Generate Schema</span>
                 </button>
               </div>

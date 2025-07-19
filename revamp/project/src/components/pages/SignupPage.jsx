@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Shield } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useAuth } from '../../contexts/AuthContext';
 import '../../styles/AuthPages.css';
@@ -57,11 +56,11 @@ const SignupPage = ({ onSwitchToLogin }) => {
       <div className={`auth-card ${isDark ? 'dark' : 'light'}`}>
         {/* Header */}
         <div className="auth-header">
-          <div className="flex flex-col items-center mb-6">
+          <div className="auth-logo-container">
             <img 
               src="https://experienceleague.adobe.com/icons/adobe-red-logo.svg" 
               alt="Adobe Logo" 
-              className="w-16 h-16 mb-4"
+              className="auth-logo-image"
             />
           </div>
           <h1 className={`auth-title ${isDark ? 'dark' : 'light'}`}>
@@ -74,7 +73,7 @@ const SignupPage = ({ onSwitchToLogin }) => {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="auth-form">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="auth-form-grid">
             <div className="form-group">
               <label className={`form-label ${isDark ? 'dark' : 'light'}`}>
                 Email Address
